@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIMLABS | Next-Gen R&D Lab</title>
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --surface: #131a26;
+            --text: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --accent-purple: #a855f7;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .logo-wrapper {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 8px;
+        }
+
+        .tagline {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 242, 254, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .project-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+            border-radius: 20px;
+            font-weight: 600;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+
+        footer a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo-wrapper">
+                <!-- SVG Icon mewakili bentuk struktural R&D dan inisial P -->
+                <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M30 20H55C68.8071 20 80 31.1929 80 45C80 58.8071 68.8071 70 55 70H30V20Z" stroke="url(#paint0_linear)" stroke-width="8" stroke-linejoin="round"/>
+                    <path d="M30 20V85" stroke="url(#paint0_linear)" stroke-width="8" stroke-linecap="round"/>
+                    <circle cx="55" cy="45" r="6" fill="#00f2fe"/>
+                    <circle cx="80" cy="45" r="4" fill="#4facfe"/>
+                    <line x1="30" y1="45" x2="55" y2="45" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="4 4"/>
+                    <defs>
+                        <linearGradient id="paint0_linear" x1="30" y1="20" x2="80" y2="70" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#00f2fe"/>
+                            <stop offset="1" stop-color="#4facfe"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <h1>PIMLABS</h1>
+            <p class="tagline">An open-source research and development lab focused on building next-generation software, developer tools, and advanced input ecosystems.</p>
+        </header>
+
+        <main>
+            <h2 class="section-title">Active Projects</h2>
+            <div class="projects-grid">
+                
+                <!-- Project 1: Stilus -->
+                <a href="https://github.com/pimlabs/stilus" class="card">
+                    <div class="card-header">
+                        <span class="project-name">Stilus</span>
+                        <span class="status-badge">Active R&D</span>
+                    </div>
+                    <p>Precision input re-imagined. Advanced digital stylus interactions, custom protocols, and low-latency hardware-software integration framework.</p>
+                </a>
+
+                <!-- Sediakan placeholder untuk project berikutnya jika ada skala otomasi/ R&D baru -->
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 PIMLABS. Built for high performance. View on <a href="https://github.com/pimlabs">GitHub</a>.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
