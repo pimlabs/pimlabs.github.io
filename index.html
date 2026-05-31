@@ -30,7 +30,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -42,6 +42,16 @@
 
         .logo-wrapper {
             margin-bottom: 20px;
+        }
+
+        .org-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            padding: 4px;
         }
 
         h1 {
@@ -63,16 +73,22 @@
             text-transform: uppercase;
             letter-spacing: 0.15em;
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 8px;
         }
 
         .projects-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
             margin-bottom: 60px;
+        }
+
+        @media (max-width: 480px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .card {
@@ -83,7 +99,9 @@
             transition: transform 0.2s ease, border-color 0.2s ease;
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .card:hover {
@@ -119,6 +137,7 @@
         .card p {
             color: var(--text-muted);
             font-size: 0.95rem;
+            flex-grow: 1;
         }
 
         footer {
@@ -145,20 +164,8 @@
     <div class="container">
         <header>
             <div class="logo-wrapper">
-                <!-- SVG Icon mewakili bentuk struktural R&D dan inisial P -->
-                <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M30 20H55C68.8071 20 80 31.1929 80 45C80 58.8071 68.8071 70 55 70H30V20Z" stroke="url(#paint0_linear)" stroke-width="8" stroke-linejoin="round"/>
-                    <path d="M30 20V85" stroke="url(#paint0_linear)" stroke-width="8" stroke-linecap="round"/>
-                    <circle cx="55" cy="45" r="6" fill="#00f2fe"/>
-                    <circle cx="80" cy="45" r="4" fill="#4facfe"/>
-                    <line x1="30" y1="45" x2="55" y2="45" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="4 4"/>
-                    <defs>
-                        <linearGradient id="paint0_linear" x1="30" y1="20" x2="80" y2="70" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#00f2fe"/>
-                            <stop offset="1" stop-color="#4facfe"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
+                <!-- Sync otomatis dengan avatar GitHub Organisasi PIMLABS -->
+                <img src="https://github.com/pimlabs.png" alt="PIMLABS Logo" class="org-logo">
             </div>
             <h1>PIMLABS</h1>
             <p class="tagline">An open-source research and development lab focused on building next-generation software, developer tools, and advanced input ecosystems.</p>
@@ -170,14 +177,26 @@
                 
                 <!-- Project 1: Stilus -->
                 <a href="https://github.com/pimlabs/stilus" class="card">
-                    <div class="card-header">
-                        <span class="project-name">Stilus</span>
-                        <span class="status-badge">Active R&D</span>
+                    <div>
+                        <div class="card-header">
+                            <span class="project-name">Stilus</span>
+                            <span class="status-badge">Active R&D</span>
+                        </div>
+                        <p>Precision input re-imagined. Advanced digital stylus interactions, custom protocols, and low-latency hardware-software integration framework.</p>
                     </div>
-                    <p>Precision input re-imagined. Advanced digital stylus interactions, custom protocols, and low-latency hardware-software integration framework.</p>
                 </a>
 
-                <!-- Sediakan placeholder untuk project berikutnya jika ada skala otomasi/ R&D baru -->
+                <!-- Project 2: Roulette -->
+                <a href="https://github.com/pimlabs/roulette" class="card">
+                    <div>
+                        <div class="card-header">
+                            <span class="project-name">Roulette</span>
+                            <span class="status-badge">Active R&D</span>
+                        </div>
+                        <p>High-performance decision matrix and randomization engine. Designed for deterministic distribution, testing automation, and load balancing workflows.</p>
+                    </div>
+                </a>
+
             </div>
         </main>
 
