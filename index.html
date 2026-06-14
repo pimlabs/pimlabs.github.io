@@ -346,7 +346,7 @@ footer {
 </div>
 
 <script>
-const REPOS = ["stilus","roulette"];
+const REPOS = ["stilus","roulette", "brewmaster"];
 
 async function fetchRepo(name) {
   try { const r = await fetch("https://api.github.com/repos/pimlabs/"+name); return r.ok ? r.json() : null; }
