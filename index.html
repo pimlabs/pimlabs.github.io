@@ -346,15 +346,22 @@ footer {
 </div>
 
 <script>
-const REPOS = ["tatap","stilus","roulette","brewmaster"];
+const SITE_REPO = "pimlabs.github.io";
 
-async function fetchRepo(name) {
-  try { const r = await fetch("https://api.github.com/repos/pimlabs/"+name); return r.ok ? r.json() : null; }
+async function fetchJSON(url) {
+  try { const r = await fetch(url); return r.ok ? r.json() : null; }
   catch { return null; }
 }
+async function fetchRepos() {
+  const local = await fetchJSON("data/repos.json");
+  if (Array.isArray(local) && local.length) return local;
+  const live = await fetchJSON("https://api.github.com/orgs/pimlabs/repos?type=public&sort=pushed&per_page=100");
+  return Array.isArray(live) ? live : [];
+}
 async function fetchOrg() {
-  try { const r = await fetch("https://api.github.com/orgs/pimlabs"); return r.ok ? r.json() : null; }
-  catch { return null; }
+  const local = await fetchJSON("data/org.json");
+  if (local && local.description) return local;
+  return fetchJSON("https://api.github.com/orgs/pimlabs");
 }
 function getAge(p) {
   const d = Math.floor((Date.now()-new Date(p))/86400000);
@@ -398,9 +405,9 @@ function renderCard(repo) {
 }
 
 async function load() {
-  const [repos, org] = await Promise.all([Promise.all(REPOS.map(fetchRepo)), fetchOrg()]);
+  const [repos, org] = await Promise.all([fetchRepos(), fetchOrg()]);
   if(org && org.description) document.getElementById("org-desc").textContent = org.description;
-  const valid = repos.filter(Boolean);
+  const valid = repos.filter(r => r && !r.fork && r.name !== SITE_REPO);
   const grid  = document.getElementById("grid");
   if(!valid.length){ grid.innerHTML='<p style="font-family:Space Mono,monospace;font-size:.8rem;color:#4b5f72">Could not load repositories.</p>'; return; }
   grid.innerHTML = valid.map(renderCard).join("");
