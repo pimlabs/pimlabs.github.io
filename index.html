@@ -347,6 +347,7 @@ footer {
 
 <script>
 const SITE_REPO = "pimlabs.github.io";
+const EXCLUDE = ["homebrew-tap", "article-scraper"];
 
 async function fetchJSON(url) {
   try { const r = await fetch(url); return r.ok ? r.json() : null; }
@@ -407,7 +408,7 @@ function renderCard(repo) {
 async function load() {
   const [repos, org] = await Promise.all([fetchRepos(), fetchOrg()]);
   if(org && org.description) document.getElementById("org-desc").textContent = org.description;
-  const valid = repos.filter(r => r && !r.fork && r.name !== SITE_REPO);
+  const valid = repos.filter(r => r && !r.fork && r.name !== SITE_REPO && !EXCLUDE.includes(r.name));
   const grid  = document.getElementById("grid");
   if(!valid.length){ grid.innerHTML='<p style="font-family:Space Mono,monospace;font-size:.8rem;color:#4b5f72">Could not load repositories.</p>'; return; }
   grid.innerHTML = valid.map(renderCard).join("");
