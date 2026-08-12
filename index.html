@@ -88,6 +88,8 @@ nav {
   width: 6px; height: 6px; border-radius: 50%; background: var(--pink);
   animation: pulse 2s ease-in-out infinite;
 }
+.side-tab #side-index { color: var(--pink); }
+.side-tab .side-sep { color: var(--dim); }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.2} }
 @media(max-width:1120px){ .side-tab{ display:none; } }
 
@@ -308,7 +310,7 @@ footer {
   </div>
 </nav>
 
-<div class="side-tab">Pimlabs — Vol. 01 <span class="dot"></span></div>
+<div class="side-tab"><span id="side-index">00</span><span class="side-sep"> / </span><span id="side-total">00</span><span class="dot"></span></div>
 
 <div class="wrap">
 
@@ -435,7 +437,7 @@ function animateCount(el, target) {
   const start = performance.now();
   const duration = 700;
   function tick(now) {
-    const p = Math.min(1, (now - start) / duration);
+    const p = Math.max(0, Math.min(1, (now - start) / duration));
     const eased = 1 - Math.pow(1 - p, 3);
     el.textContent = Math.round(eased * target);
     if (p < 1) requestAnimationFrame(tick);
@@ -463,6 +465,23 @@ function observeStats() {
   setTimeout(run, 1200);
 }
 
+function observeActiveIndex(total) {
+  const idxEl = document.getElementById('side-index');
+  const totalEl = document.getElementById('side-total');
+  if (!idxEl || !totalEl) return;
+  totalEl.textContent = String(total).padStart(2, "0");
+  const rows = Array.from(document.querySelectorAll('.row'));
+  if (!rows.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const i = rows.indexOf(e.target);
+      if (i > -1) idxEl.textContent = String(i + 1).padStart(2, "0");
+    });
+  }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
+  rows.forEach(r => io.observe(r));
+}
+
 async function load() {
   const [repos, org] = await Promise.all([fetchRepos(), fetchOrg()]);
   if(org && org.description) document.getElementById("org-desc").textContent = org.description;
@@ -476,6 +495,7 @@ async function load() {
   document.getElementById("stat-issues").dataset.target = valid.reduce((s,r)=>s+r.open_issues_count,0);
   observeRows();
   observeStats();
+  observeActiveIndex(valid.length);
 }
 load();
 </script>
