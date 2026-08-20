@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>agentop — watch Claude Code multi-agent workflows live · Pimlabs</title>
+<meta name="description" content="Watch Claude Code multi-agent workflows live, from a terminal, a browser, or inside VS Code. Reads only, no API key, no account, no service Pimlabs runs.">
+<meta property="og:title" content="agentop — watch Claude Code multi-agent workflows live">
+<meta property="og:description" content="Watch Claude Code multi-agent workflows live, from a terminal, a browser, or inside VS Code. Reads only, no API key, no account, no service Pimlabs runs.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.pimlabs.id/agentop/">
+<meta property="og:image" content="https://www.pimlabs.id/agentop/demo.gif">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#e9ece3">
+<link rel="canonical" href="https://www.pimlabs.id/agentop/">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+/* agentop-specific: hero sizing, demo frame, dual install rows */
+header { padding-bottom: 8px; }
+h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); max-width: 680px; }
+
+.demo-frame { border: 2px solid var(--ink); background: var(--paper); margin-top: 36px; }
+.df-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; border-bottom: 2px solid var(--ink);
+  font-family: "JetBrains Mono", monospace; font-size: .78rem;
+}
+.df-bar .cmd .prompt { color: var(--stamp); margin-right: 8px; }
+.df-bar .note { color: var(--faint); }
+.demo-frame img { display: block; width: 100%; height: auto; }
+
+.install-row + .install-row { margin-top: 12px; }
+.install-row .platform {
+  font-family: "Barlow Condensed", sans-serif; font-weight: 700; text-transform: uppercase;
+  font-size: .78rem; letter-spacing: .04em; color: var(--faint); margin-right: 14px; flex-shrink: 0;
+}
+.install-row .cmd-wrap { display: flex; align-items: center; overflow-x: auto; }
+
+@media(max-width:760px){
+  .hero-foot { flex-direction: column; align-items: stretch; }
+  .plate { width: 100%; min-width: 0; }
+  .install-row { flex-direction: column; align-items: stretch; gap: 12px; }
+  .install-row .cmd-wrap { flex-wrap: wrap; }
+  .install-row code { display: block; white-space: normal; word-break: break-all; font-size: .82rem; }
+  .copy-btn { align-self: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../" class="nav-brand">Pimlabs<span class="sep">/</span>Agentop</a>
+    <div class="nav-links">
+      <a href="#install">Install</a>
+      <a href="#commands">Commands</a>
+      <a href="https://github.com/pimlabs/agentop" target="_blank" rel="noopener" class="nav-gh">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <div class="stamp">REV 0.12.0 · MIT</div>
+    <h1>Watch every agent. <span class="mark">Touch nothing.</span></h1>
+    <div class="hero-foot">
+      <p class="tagline">agentop watches Claude Code multi-agent workflows live, from a terminal, a browser, or inside VS Code. It reads the files Claude Code already writes to disk — no API, no account, no service Pimlabs runs.</p>
+      <div class="plate">
+        <div class="plate-row"><span class="k">Reads from</span><span class="v">Disk only</span></div>
+        <div class="plate-row"><span class="k">Network</span><span class="v">Off by default</span></div>
+        <div class="plate-row"><span class="k">Verify</span><span class="v">SHA-256 checked</span></div>
+        <div class="plate-row"><span class="k">Platforms</span><span class="v">macOS · Linux · Windows</span></div>
+      </div>
+    </div>
+
+    <div class="demo-frame">
+      <div class="df-bar">
+        <span class="cmd"><span class="prompt">$</span>agentop --demo</span>
+        <span class="note">no disk ever touched</span>
+      </div>
+      <img src="demo.gif" alt="agentop watching one workflow run: eight agents across three phases, one failed, two idle" width="1300" height="640" loading="lazy">
+    </div>
+
+    <div id="install" style="margin-top:32px">
+      <div class="install-row">
+        <span class="platform">macOS / Linux</span>
+        <div class="cmd-wrap"><span class="prompt">$</span><code>curl -fsSL https://agentop.pimlabs.id/install | sh</code></div>
+        <button class="copy-btn" type="button">Copy</button>
+      </div>
+      <div class="install-row">
+        <span class="platform">Windows</span>
+        <div class="cmd-wrap"><span class="prompt">$</span><code>irm https://agentop.pimlabs.id/install.ps1 | iex</code></div>
+        <button class="copy-btn" type="button">Copy</button>
+      </div>
+    </div>
+    <div class="reqs">
+      Or <span class="chip">brew install pimlabs/tap/agentop</span> on macOS, <span class="chip">npm install -g @pimlabs/agentop</span> anywhere with Node. Every route checks its SHA-256 before installing anything.
+    </div>
+  </header>
+
+  <div class="bleed band">
+    <div class="band-inner">
+      <div class="stat-block"><span class="stat-num">3</span><span class="stat-lbl">Surfaces, one binary</span></div>
+      <div class="stat-block"><span class="stat-num accent">0</span><span class="stat-lbl">Outbound connections</span></div>
+      <div class="stat-block"><span class="stat-num">6</span><span class="stat-lbl">Platform builds</span></div>
+    </div>
+  </div>
+
+  <section id="why">
+    <div class="section-label"><span class="mark">§</span><span class="title">Why it's safe to run</span></div>
+    <div class="section-sub">Six things that make it worth running next to a live workflow.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">1</span><div class="row-main"><div class="row-name">Reads only</div><p class="row-desc">Never writes to a Claude Code config directory. Running it beside a live workflow is safe — there is no race against Claude Code itself.</p></div><div class="row-meta"><span class="chip">read-only</span></div></div>
+      <div class="row"><span class="row-num">2</span><div class="row-main"><div class="row-name">No API, no account</div><p class="row-desc">Reads the files Claude Code already writes to disk. Connects to no API and speaks no protocol.</p></div><div class="row-meta"><span class="chip">no API key</span></div></div>
+      <div class="row"><span class="row-num">3</span><div class="row-main"><div class="row-name">Verified before it runs</div><p class="row-desc">Every install checks its SHA-256 against the published checksums first, and stops rather than installing when that fails.</p></div><div class="row-meta"><span class="chip">SHA-256</span></div></div>
+      <div class="row"><span class="row-num">4</span><div class="row-main"><div class="row-name">Stalled means something</div><p class="row-desc">The threshold is three times that agent's own longest gap between tool calls, with a floor of two minutes — not one fixed number that's wrong for everyone.</p></div><div class="row-meta"><span class="chip">≥2min floor</span></div></div>
+      <div class="row"><span class="row-num">5</span><div class="row-main"><div class="row-name">The schema doesn't move quietly</div><p class="row-desc">Every JSON key is public API. Renaming one is a breaking change that bumps the version number, and a golden-file test fails the build if it doesn't.</p></div><div class="row-meta"><span class="chip">v2 schema</span></div></div>
+      <div class="row"><span class="row-num">6</span><div class="row-main"><div class="row-name">Transcripts stay local</div><p class="row-desc">--full is refused on any address that isn't loopback, no flag to override it. Over a network you get agent states, never the source inside them.</p></div><div class="row-meta"><span class="chip">--full</span></div></div>
+    </div>
+  </section>
+
+  <div class="hazard-sandwich">
+    <div class="hazard-strip"></div>
+    <div class="bleed ticker">
+      <div class="ticker-track">
+        <span><span class="bullet">●</span>READS ONLY, NEVER WRITES</span><span><span class="bullet">●</span>NO API KEY, NO ACCOUNT</span><span><span class="bullet">●</span>TERMINAL · BROWSER · VS CODE</span><span><span class="bullet">●</span>MACOS · LINUX · WINDOWS</span>
+        <span><span class="bullet">●</span>READS ONLY, NEVER WRITES</span><span><span class="bullet">●</span>NO API KEY, NO ACCOUNT</span><span><span class="bullet">●</span>TERMINAL · BROWSER · VS CODE</span><span><span class="bullet">●</span>MACOS · LINUX · WINDOWS</span>
+      </div>
+    </div>
+    <div class="hazard-strip"></div>
+  </div>
+
+  <section id="surfaces">
+    <div class="section-label"><span class="mark">§</span><span class="title">Three surfaces, one binary</span></div>
+    <div class="section-sub">Same files, same words, wherever you're watching from.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">1</span><div class="row-main"><div class="row-name">Terminal</div><p class="row-desc">The machine you're sitting at. Arrow keys walk three levels: runs, that run's agents, then one agent's transcript.</p></div><div class="row-meta"><span class="chip">agentop</span></div></div>
+      <div class="row"><span class="row-num">2</span><div class="row-main"><div class="row-name">Browser dashboard</div><p class="row-desc">Another machine, or a phone. Mission Control for the overview, a three-pane Runs view for one workflow's detail.</p></div><div class="row-meta"><span class="chip">agentop serve</span></div></div>
+      <div class="row"><span class="row-num">3</span><div class="row-main"><div class="row-name">VS Code</div><p class="row-desc">A status bar item, a Runs panel in the Activity Bar, each transcript as a read-only editor document.</p></div><div class="row-meta"><span class="chip">.vsix install</span></div></div>
+    </div>
+  </section>
+
+  <section id="commands">
+    <div class="section-label"><span class="mark">§</span><span class="title">Commands</span><span class="count">(6)</span></div>
+    <div class="section-sub">Every one writes to stdout, so piping and paging both just work.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">1</span><div class="row-main"><div class="row-name mono">agentop</div><p class="row-desc">The newest run, across both config roots.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">2</span><div class="row-main"><div class="row-name mono">agentop wf_e63f8578</div><p class="row-desc">A specific run — an id prefix is enough.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">3</span><div class="row-main"><div class="row-name mono">agentop --demo</div><p class="row-desc">The built-in sample run above. No disk is ever read.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">4</span><div class="row-main"><div class="row-name mono">agentop serve</div><p class="row-desc">The browser dashboard. Loopback only until you pass --listen.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">5</span><div class="row-main"><div class="row-name mono">agentop runs --json</div><p class="row-desc">List every run once and exit — for scripts.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">6</span><div class="row-main"><div class="row-name mono">agentop watch --ndjson</div><p class="row-desc">Stream every change until interrupted.</p></div><div class="row-meta"></div></div>
+    </div>
+  </section>
+
+  <section id="known-issues">
+    <div class="section-label"><span class="mark">!</span><span class="title">Known issues</span></div>
+    <div class="section-sub">Read this before you file a bug — it might already be documented.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">!</span><div class="row-main"><div class="row-name">"Command not found" after installing</div><p class="row-desc">The install directory isn't on your PATH. install.sh prints exactly where it put the binary on its last line.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">!</span><div class="row-main"><div class="row-name">The screen is empty under WSL or Remote SSH</div><p class="row-desc">The journal lives on the machine Claude Code runs on, not necessarily the one your editor runs on. Set AGENTOP_HOME to the home directory that holds .claude.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">!</span><div class="row-main"><div class="row-name">The liveness column reads "unknown"</div><p class="row-desc">ps or lsof is missing on this machine. That column, and only that column, depends on them.</p></div><div class="row-meta"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-line">Watches everything. <span class="mark">Touches nothing.</span></p>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 PIMLABS · MIT LICENSED</div>
+      <a href="https://github.com/pimlabs/agentop" target="_blank" rel="noopener" class="footer-link">View on GitHub ↗</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(() => {
+  document.querySelectorAll('.install-row').forEach(row => {
+    const btn = row.querySelector('.copy-btn');
+    const codeEl = row.querySelector('code');
+    if (!btn || !codeEl) return;
+    btn.addEventListener('click', () => {
+      const done = () => {
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
+      };
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(codeEl.textContent).then(done, done);
+      } else {
+        done();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
