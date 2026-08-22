@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenIdea — a file-based product idea lifecycle for Claude Code · Pimlabs</title>
+<meta name="description" content="A Claude Code plugin for managing a product idea lifecycle end-to-end, file-based — from vision, through capture and evaluation, to a roadmap and OpenSpec handoff.">
+<meta property="og:title" content="OpenIdea — a file-based product idea lifecycle for Claude Code">
+<meta property="og:description" content="A Claude Code plugin for managing a product idea lifecycle end-to-end, file-based — from vision, through capture and evaluation, to a roadmap and OpenSpec handoff.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.pimlabs.id/openidea/">
+<meta property="og:image" content="https://www.pimlabs.id/openidea/demo.gif">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#e9ece3">
+<link rel="canonical" href="https://www.pimlabs.id/openidea/">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+header { padding-bottom: 8px; }
+h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); max-width: 660px; }
+
+.demo-frame { border: 2px solid var(--ink); background: var(--paper); margin-top: 36px; max-width: 480px; }
+.df-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 16px; border-bottom: 2px solid var(--ink);
+  font-family: "JetBrains Mono", monospace; font-size: .72rem;
+}
+.df-bar .cmd { color: var(--stamp); }
+.df-bar .note { color: var(--faint); flex-shrink: 0; }
+.demo-frame img { display: block; width: 100%; height: auto; }
+
+.install-row + .install-row { margin-top: 12px; }
+.install-row .platform {
+  font-family: "Barlow Condensed", sans-serif; font-weight: 700; text-transform: uppercase;
+  font-size: .78rem; letter-spacing: .04em; color: var(--faint); margin-right: 14px; flex-shrink: 0;
+}
+.install-row .cmd-wrap { display: flex; align-items: center; overflow-x: auto; }
+
+@media(max-width:760px){
+  .hero-foot { flex-direction: column; align-items: stretch; }
+  .plate { width: 100%; min-width: 0; }
+  .demo-frame { max-width: 100%; }
+  .install-row { flex-direction: column; align-items: stretch; gap: 12px; }
+  .install-row .cmd-wrap { flex-wrap: wrap; }
+  .install-row code { display: block; white-space: normal; word-break: break-all; font-size: .82rem; }
+  .copy-btn { align-self: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../" class="nav-brand">Pimlabs<span class="sep">/</span>OpenIdea</a>
+    <div class="nav-links">
+      <a href="#install">Install</a>
+      <a href="#commands">Commands</a>
+      <a href="https://github.com/pimlabs/openidea" target="_blank" rel="noopener" class="nav-gh">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <div class="stamp">CLAUDE CODE PLUGIN · MIT</div>
+    <h1>From idea to spec, <span class="mark">on the record.</span></h1>
+    <div class="hero-foot">
+      <p class="tagline">OpenIdea manages a product idea lifecycle end-to-end, file-based — vision, capture, evaluation, a roadmap, then a drafted spec handed to OpenSpec. Nothing lives only in a chat thread.</p>
+      <div class="plate">
+        <div class="plate-row"><span class="k">Install</span><span class="v">/plugin marketplace</span></div>
+        <div class="plate-row"><span class="k">Output</span><span class="v">Plain files</span></div>
+        <div class="plate-row"><span class="k">Commands</span><span class="v">8, /openidea:*</span></div>
+        <div class="plate-row"><span class="k">Handoff</span><span class="v">OpenSpec compatible</span></div>
+      </div>
+    </div>
+
+    <div class="demo-frame">
+      <div class="df-bar">
+        <span class="cmd">init → capture → evaluate → plan</span>
+        <span class="note">nothing staged</span>
+      </div>
+      <img src="demo.gif" alt="OpenIdea demo: init, capture, evaluate, plan — a real run catching an offline-first conflict and asking before proceeding" width="921" height="861" loading="lazy">
+    </div>
+
+    <div id="install" style="margin-top:32px">
+      <div class="install-row">
+        <span class="platform">Step 1</span>
+        <div class="cmd-wrap"><span class="prompt">/</span><code>plugin marketplace add pimlabs/openidea</code></div>
+        <button class="copy-btn" type="button">Copy</button>
+      </div>
+      <div class="install-row">
+        <span class="platform">Step 2</span>
+        <div class="cmd-wrap"><span class="prompt">/</span><code>plugin install openidea@pimlabs</code></div>
+        <button class="copy-btn" type="button">Copy</button>
+      </div>
+    </div>
+    <div class="reqs">
+      Runs as slash commands inside a Claude Code session, no separate binary, no service to run.
+    </div>
+  </header>
+
+  <div class="bleed band">
+    <div class="band-inner">
+      <div class="stat-block"><span class="stat-num">8</span><span class="stat-lbl">Slash commands</span></div>
+      <div class="stat-block"><span class="stat-num accent">3</span><span class="stat-lbl">Idea states tracked</span></div>
+      <div class="stat-block"><span class="stat-num">0</span><span class="stat-lbl">Servers, just files</span></div>
+    </div>
+  </div>
+
+  <section id="why">
+    <div class="section-label"><span class="mark">§</span><span class="title">How it thinks</span></div>
+    <div class="section-sub">Six things that keep an idea from getting lost between capture and a shipped spec.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">1</span><div class="row-main"><div class="row-name">Structured before it's built</div><p class="row-desc">init turns a vision, told in your own words, into BRIEF.md before any idea capture starts.</p></div><div class="row-meta"><span class="chip">BRIEF.md</span></div></div>
+      <div class="row"><span class="row-num">2</span><div class="row-main"><div class="row-name">Catches conflicts before you commit to them</div><p class="row-desc">evaluate checks captured ideas for overlap, and asks before recommending a status change.</p></div><div class="row-meta"><span class="chip">/openidea:evaluate</span></div></div>
+      <div class="row"><span class="row-num">3</span><div class="row-main"><div class="row-name">Only ready ideas reach the roadmap</div><p class="row-desc">plan arranges ready ideas into ROADMAP.md — nothing still captured slips through early.</p></div><div class="row-meta"><span class="chip">/openidea:plan</span></div></div>
+      <div class="row"><span class="row-num">4</span><div class="row-main"><div class="row-name">Hands off to real spec tooling</div><p class="row-desc">spec-draft writes an OpenSpec proposal, design, and tasks file straight from a milestone.</p></div><div class="row-meta"><span class="chip">OpenSpec</span></div></div>
+      <div class="row"><span class="row-num">5</span><div class="row-main"><div class="row-name">Client-facing and technical stay separate</div><p class="row-desc">compile writes the narrative version, export packages the technical handoff — only when either is actually needed.</p></div><div class="row-meta"><span class="chip">/openidea:compile</span></div></div>
+      <div class="row"><span class="row-num">6</span><div class="row-main"><div class="row-name">Checked before every push</div><p class="row-desc">scripts/test.sh validates the plugin and smoke-tests all 8 commands from an empty directory.</p></div><div class="row-meta"><span class="chip">scripts/test.sh</span></div></div>
+    </div>
+  </section>
+
+  <div class="hazard-sandwich">
+    <div class="hazard-strip"></div>
+    <div class="bleed ticker">
+      <div class="ticker-track">
+        <span><span class="bullet">●</span>CAPTURE · EVALUATE · PLAN · SPEC</span><span><span class="bullet">●</span>FILE-BASED, NO SERVER</span><span><span class="bullet">●</span>HANDS OFF TO OPENSPEC</span><span><span class="bullet">●</span>8 SLASH COMMANDS</span>
+        <span><span class="bullet">●</span>CAPTURE · EVALUATE · PLAN · SPEC</span><span><span class="bullet">●</span>FILE-BASED, NO SERVER</span><span><span class="bullet">●</span>HANDS OFF TO OPENSPEC</span><span><span class="bullet">●</span>8 SLASH COMMANDS</span>
+      </div>
+    </div>
+    <div class="hazard-strip"></div>
+  </div>
+
+  <section id="commands">
+    <div class="section-label"><span class="mark">§</span><span class="title">Commands</span><span class="count">(8)</span></div>
+    <div class="section-sub">The order a solo flow actually runs in, start to finish.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">1</span><div class="row-main"><div class="row-name mono">/openidea:init</div><p class="row-desc">Structure a product vision into BRIEF.md.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">2</span><div class="row-main"><div class="row-name mono">/openidea:capture</div><p class="row-desc">Capture a new idea, free-form or extracted from notes.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">3</span><div class="row-main"><div class="row-name mono">/openidea:evaluate</div><p class="row-desc">Check captured ideas for overlap or conflict, recommend a status.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">4</span><div class="row-main"><div class="row-name mono">/openidea:plan</div><p class="row-desc">Arrange ready ideas into ROADMAP.md.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">5</span><div class="row-main"><div class="row-name mono">/openidea:spec-draft</div><p class="row-desc">Generate an OpenSpec proposal, design, and tasks from a milestone.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">6</span><div class="row-main"><div class="row-name mono">/openidea:compile</div><p class="row-desc">Compile ready ideas into a client-facing proposal narrative.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">7</span><div class="row-main"><div class="row-name mono">/openidea:export</div><p class="row-desc">Package a milestone's technical content for external handoff.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">8</span><div class="row-main"><div class="row-name mono">/openidea:spec-audit</div><p class="row-desc">Read-only drift audit — OpenSpec output against the source ideas.</p></div><div class="row-meta"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-line">Every idea gets <span class="mark">somewhere to go.</span></p>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 PIMLABS · MIT LICENSED</div>
+      <a href="https://github.com/pimlabs/openidea" target="_blank" rel="noopener" class="footer-link">View on GitHub ↗</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(() => {
+  document.querySelectorAll('.install-row').forEach(row => {
+    const btn = row.querySelector('.copy-btn');
+    const codeEl = row.querySelector('code');
+    if (!btn || !codeEl) return;
+    btn.addEventListener('click', () => {
+      const done = () => {
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
+      };
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(codeEl.textContent).then(done, done);
+      } else {
+        done();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

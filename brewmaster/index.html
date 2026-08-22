@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>brewmaster — selective Homebrew upgrades by semver · Pimlabs</title>
+<meta name="description" content="Selective package upgrade manager for Homebrew based on semantic versioning. Upgrades only patch, minor, or major, scores the risk first, and snapshots before it removes anything.">
+<meta property="og:title" content="brewmaster — selective Homebrew upgrades by semver">
+<meta property="og:description" content="Selective package upgrade manager for Homebrew based on semantic versioning. Upgrades only patch, minor, or major, scores the risk first, and snapshots before it removes anything.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.pimlabs.id/brewmaster/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e9ece3">
+<link rel="canonical" href="https://www.pimlabs.id/brewmaster/">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+header { padding-bottom: 8px; }
+h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); max-width: 640px; }
+
+@media(max-width:760px){
+  .hero-foot { flex-direction: column; align-items: stretch; }
+  .plate { width: 100%; min-width: 0; }
+  .install-row { flex-direction: column; align-items: stretch; gap: 12px; }
+  .install-row code { display: block; white-space: normal; word-break: break-all; font-size: .82rem; }
+  .copy-btn { align-self: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../" class="nav-brand">Pimlabs<span class="sep">/</span>Brewmaster</a>
+    <div class="nav-links">
+      <a href="#install">Install</a>
+      <a href="#commands">Commands</a>
+      <a href="https://github.com/pimlabs/brewmaster" target="_blank" rel="noopener" class="nav-gh">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <div class="stamp">REV 0.11.0 · MIT</div>
+    <h1>Every upgrade, <span class="mark">on purpose.</span></h1>
+    <div class="hero-foot">
+      <p class="tagline">brewmaster upgrades only what you tell it to, patch, minor, or major, and understands why a package exists on your machine before it touches it. No AI, no guessing, deterministic logic from real data.</p>
+      <div class="plate">
+        <div class="plate-row"><span class="k">Upgrade levels</span><span class="v">Patch · Minor · Major</span></div>
+        <div class="plate-row"><span class="k">Risk scoring</span><span class="v">Dependents + bump size</span></div>
+        <div class="plate-row"><span class="k">Before cleanup</span><span class="v">Snapshot, automatic</span></div>
+        <div class="plate-row"><span class="k">CI status</span><span class="v">Passing</span></div>
+      </div>
+    </div>
+
+    <div id="install" class="install-row">
+      <div><span class="prompt">$</span><code>brew tap pimlabs/tap && brew install brewmaster</code></div>
+      <button class="copy-btn" type="button">Copy</button>
+    </div>
+    <div class="reqs">
+      Shell completions for <span class="chip">bash</span> <span class="chip">zsh</span> <span class="chip">fish</span> ship in the repo, not the formula yet, so they're a manual copy for now. A man page lives at <span class="mono" style="font-size:.8rem">docs/brewmaster.1</span>.
+    </div>
+  </header>
+
+  <div class="bleed band">
+    <div class="band-inner">
+      <div class="stat-block"><span class="stat-num">6</span><span class="stat-lbl">Command areas</span></div>
+      <div class="stat-block"><span class="stat-num accent">0</span><span class="stat-lbl">AI or guessing involved</span></div>
+      <div class="stat-block"><span class="stat-num">NDJSON</span><span class="stat-lbl">Every action logged</span></div>
+    </div>
+  </div>
+
+  <section id="why">
+    <div class="section-label"><span class="mark">§</span><span class="title">Why it doesn't guess</span></div>
+    <div class="section-sub">Six things a bare "brew upgrade" doesn't stop to ask.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">1</span><div class="row-main"><div class="row-name">Understands why a package is there</div><p class="row-desc">Traces the dependency reasoning behind a package before you decide anything about it.</p></div><div class="row-meta"><span class="chip">brewmaster why</span></div></div>
+      <div class="row"><span class="row-num">2</span><div class="row-main"><div class="row-name">Upgrades only what you choose</div><p class="row-desc">Patch, minor, or major, picked per run or locked into a named profile you can reuse.</p></div><div class="row-meta"><span class="chip">--minor</span></div></div>
+      <div class="row"><span class="row-num">3</span><div class="row-main"><div class="row-name">Scores the risk before it acts</div><p class="row-desc">Dependents and bump size decide a score. Confirm on MEDIUM, skip HIGH outright unless told otherwise.</p></div><div class="row-meta"><span class="chip">--check-deps</span></div></div>
+      <div class="row"><span class="row-num">4</span><div class="row-main"><div class="row-name">Never upgrades without a way back</div><p class="row-desc">A snapshot is taken automatically before every cleanup removal, restorable with one command.</p></div><div class="row-meta"><span class="chip">snapshot restore</span></div></div>
+      <div class="row"><span class="row-num">5</span><div class="row-main"><div class="row-name">Finds what's just sitting there</div><p class="row-desc">Orphan, stale, and old-pinned packages, with the dependency reasoning behind each one.</p></div><div class="row-meta"><span class="chip">brewmaster bloat</span></div></div>
+      <div class="row"><span class="row-num">6</span><div class="row-main"><div class="row-name">Writes down everything it did</div><p class="row-desc">Every upgrade, cleanup, and snapshot recorded to one NDJSON audit log you can filter and export.</p></div><div class="row-meta"><span class="chip">brewmaster log</span></div></div>
+    </div>
+  </section>
+
+  <div class="hazard-sandwich">
+    <div class="hazard-strip"></div>
+    <div class="bleed ticker">
+      <div class="ticker-track">
+        <span><span class="bullet">●</span>PATCH · MINOR · MAJOR</span><span><span class="bullet">●</span>NO AI, NO GUESSING</span><span><span class="bullet">●</span>SNAPSHOT BEFORE EVERY REMOVAL</span><span><span class="bullet">●</span>DETERMINISTIC LOGIC</span>
+        <span><span class="bullet">●</span>PATCH · MINOR · MAJOR</span><span><span class="bullet">●</span>NO AI, NO GUESSING</span><span><span class="bullet">●</span>SNAPSHOT BEFORE EVERY REMOVAL</span><span><span class="bullet">●</span>DETERMINISTIC LOGIC</span>
+      </div>
+    </div>
+    <div class="hazard-strip"></div>
+  </div>
+
+  <section id="commands">
+    <div class="section-label"><span class="mark">§</span><span class="title">Commands</span><span class="count">(8)</span></div>
+    <div class="section-sub">Every run defaults to a dry, read-only report unless told to act.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">1</span><div class="row-main"><div class="row-name mono">brewmaster --dry-run</div><p class="row-desc">See what would upgrade, at the default patch level, without touching anything.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">2</span><div class="row-main"><div class="row-name mono">brewmaster --minor</div><p class="row-desc">Upgrade minor bumps only.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">3</span><div class="row-main"><div class="row-name mono">brewmaster --check-deps</div><p class="row-desc">Score dependency risk before applying any upgrade.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">4</span><div class="row-main"><div class="row-name mono">brewmaster why &lt;pkg&gt;</div><p class="row-desc">Explain why a package is on this machine.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">5</span><div class="row-main"><div class="row-name mono">brewmaster snapshot save</div><p class="row-desc">Save the current package state, labelled for later.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">6</span><div class="row-main"><div class="row-name mono">brewmaster cleanup --dry-run</div><p class="row-desc">Read-only report of orphan and stale packages safe to remove.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">7</span><div class="row-main"><div class="row-name mono">brewmaster profile list</div><p class="row-desc">List named upgrade policies for this machine.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">8</span><div class="row-main"><div class="row-name mono">brewmaster log</div><p class="row-desc">Show upgrade, cleanup, and snapshot history.</p></div><div class="row-meta"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-line">Nothing changes here <span class="mark">by accident.</span></p>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 PIMLABS · MIT LICENSED</div>
+      <a href="https://github.com/pimlabs/brewmaster" target="_blank" rel="noopener" class="footer-link">View on GitHub ↗</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(() => {
+  document.querySelectorAll('.install-row').forEach(row => {
+    const btn = row.querySelector('.copy-btn');
+    const codeEl = row.querySelector('code');
+    if (!btn || !codeEl) return;
+    btn.addEventListener('click', () => {
+      const done = () => {
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
+      };
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(codeEl.textContent).then(done, done);
+      } else {
+        done();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
