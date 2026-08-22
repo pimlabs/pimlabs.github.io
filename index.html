@@ -400,7 +400,8 @@ function renderRow(repo, i) {
   const age    = getAge(repo.pushed_at);
   const topics = (repo.topics||[]).slice(0,5);
   const topicsHTML = topics.length ? '<div class="row-topics">'+topics.map(t=>'<span>'+t+'</span>').join("")+'</div>' : "";
-  const hp     = repo.homepage ? '<a href="'+repo.homepage+'" target="_blank" class="row-hp" onclick="event.stopPropagation()">'+repo.homepage.replace(/^https?:\/\//,"")+' ↗</a>' : "";
+  const primaryUrl = repo.homepage || repo.html_url;
+  const secondary   = repo.homepage ? '<a href="'+repo.html_url+'" target="_blank" class="row-hp" onclick="event.stopPropagation()">GitHub ↗</a>' : "";
   const lic    = repo.license ? '<span class="chip">'+repo.license.spdx_id+'</span>' : "";
   const idx    = String(i+1).padStart(2,"0");
   const statLine = '<div class="stat-line">'
@@ -410,14 +411,14 @@ function renderRow(repo, i) {
     +(repo.watchers_count?'<span>&#9673; '+repo.watchers_count+'</span>':'')
     +lic
     +'</div>';
-  return '<div class="row" onclick="window.open(\''+repo.html_url+'\',\'_blank\')">'
+  return '<div class="row" onclick="window.open(\''+primaryUrl+'\',\'_blank\')">'
     +'<span class="row-bignum">'+idx+'</span>'
     +'<div class="row-main">'
     +'<div class="row-name">'+repo.name.charAt(0).toUpperCase()+repo.name.slice(1)+'<span class="'+cls+'">'+label+'</span></div>'
     +'<div class="row-slug">pimlabs/'+repo.name+'</div>'
     +'<p class="row-desc">'+desc+'</p>'
     +topicsHTML
-    +hp
+    +secondary
     +'</div>'
     +'<div class="row-meta">'+statLine+'<span>'+age+'</span></div>'
     +'</div>';
