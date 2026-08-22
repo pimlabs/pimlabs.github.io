@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cdev — Claude Code sessions that survive anything · Pimlabs</title>
+<meta name="description" content="Persistent, multi-account Claude Code sessions over tmux. Survives SSH disconnects, laptop sleep, and reboots. One-line install, on any box.">
+<meta property="og:title" content="cdev — Claude Code sessions that survive anything">
+<meta property="og:description" content="Persistent, multi-account Claude Code sessions over tmux. Survives SSH disconnects, laptop sleep, and reboots. One-line install, on any box.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.pimlabs.id/cdev/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e9ece3">
+<link rel="canonical" href="https://www.pimlabs.id/cdev/">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+/* cdev-specific: hero sizing, rating plate content, mobile install-row wrap */
+header { padding-bottom: 8px; }
+h1 { font-size: clamp(2.6rem, 6.4vw, 4.4rem); max-width: 640px; }
+
+.hazard-sandwich { margin-bottom: 44px; }
+.hazard-sandwich .ticker { margin-bottom: 0; }
+
+@media(max-width:760px){
+  .hero-foot { flex-direction: column; align-items: stretch; }
+  .plate { width: 100%; min-width: 0; }
+  .install-row { flex-direction: column; align-items: stretch; gap: 12px; }
+  .install-row code { display: block; white-space: normal; word-break: break-all; font-size: .82rem; }
+  .copy-btn { align-self: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../" class="nav-brand">Pimlabs<span class="sep">/</span>Cdev</a>
+    <div class="nav-links">
+      <a href="#install">Install</a>
+      <a href="#commands">Commands</a>
+      <a href="https://github.com/pimlabs/cdev" target="_blank" rel="noopener" class="nav-gh">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <div class="stamp">REV 0.10.0 · MIT</div>
+    <h1>Built to<br>outlast <span class="mark">a reboot.</span></h1>
+    <div class="hero-foot">
+      <p class="tagline">cdev turns any box into a persistent, multi-account Claude Code host — sessions that survive SSH disconnects, laptop sleep, and reboots, reachable from claude.ai/code or your phone.</p>
+      <div class="plate">
+        <div class="plate-row"><span class="k">Uptime target</span><span class="v">Continuous</span></div>
+        <div class="plate-row"><span class="k">Accounts</span><span class="v">Multi</span></div>
+        <div class="plate-row"><span class="k">Transport</span><span class="v">tmux + systemd</span></div>
+        <div class="plate-row"><span class="k">Integrity</span><span class="v">SHA256 verified</span></div>
+        <div class="plate-row"><span class="k">CI status</span><span class="v">Shellcheck passing</span></div>
+      </div>
+    </div>
+
+    <div id="install" class="install-row">
+      <div><span class="prompt">$</span><code>curl -fsSL https://cdev.pimlabs.id/install | bash</code></div>
+      <button class="copy-btn" type="button">Copy</button>
+    </div>
+    <div class="reqs">
+      Needs <span class="chip">tmux</span> <span class="chip">claude</span> <span class="chip">git</span> — <span class="mono" style="font-size:.8rem">cdev doctor</span> checks for all three. Would rather check the checksum first? <a href="https://github.com/pimlabs/cdev#verifying-the-install" target="_blank" rel="noopener" class="text-link">See the verification steps ↗</a>
+    </div>
+  </header>
+
+  <div class="bleed band">
+    <div class="band-inner">
+      <div class="stat-block"><span class="stat-num">1</span><span class="stat-lbl">Line install</span></div>
+      <div class="stat-block"><span class="stat-num accent">3</span><span class="stat-lbl">systemd units installed</span></div>
+      <div class="stat-block"><span class="stat-num">5min</span><span class="stat-lbl">health-check interval</span></div>
+    </div>
+  </div>
+
+  <section id="why">
+    <div class="section-label"><span class="mark">§</span><span class="title">Why it doesn't die</span></div>
+    <div class="section-sub">Six things a bare SSH shell can't do.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">1</span><div class="row-main"><div class="row-name">Survives anything</div><p class="row-desc">SSH disconnects, laptop sleep, a full reboot. tmux keeps the shell alive, systemd brings the box back to where it was.</p></div><div class="row-meta"><span class="chip">cdev doctor</span></div></div>
+      <div class="row"><span class="row-num">2</span><div class="row-main"><div class="row-name">One identity per account</div><p class="row-desc">Every account gets its own home at ~/.claude-&lt;account&gt;. Name a session once and it always knows which one it belongs to.</p></div><div class="row-meta"><span class="chip">cdev accounts</span></div></div>
+      <div class="row"><span class="row-num">3</span><div class="row-main"><div class="row-name">Reachable from anywhere</div><p class="row-desc">Open claude.ai/code or the mobile app, same account, same session, live — a green dot means it's actually there.</p></div><div class="row-meta"><span class="chip">claude.ai/code</span></div></div>
+      <div class="row"><span class="row-num">4</span><div class="row-main"><div class="row-name">Comes back on its own</div><p class="row-desc">One registry file, one boot-time service. Every session you didn't kill is running again before you've finished your coffee.</p></div><div class="row-meta"><span class="chip auto">cdev restore · auto</span></div></div>
+      <div class="row"><span class="row-num">5</span><div class="row-main"><div class="row-name">Tells you when it's gone quiet</div><p class="row-desc">Opt in with a webhook URL and a timer checks every five minutes. Silent until a session disappears without being told to.</p></div><div class="row-meta"><span class="chip auto">cdev healthcheck · auto</span></div></div>
+      <div class="row"><span class="row-num">6</span><div class="row-main"><div class="row-name">Checked before it runs</div><p class="row-desc">Every release ships a SHA256SUMS file. Install and upgrade both verify it automatically, no separate step to remember.</p></div><div class="row-meta"><span class="chip">SHA256SUMS</span></div></div>
+    </div>
+  </section>
+
+  <div class="hazard-sandwich">
+    <div class="hazard-strip"></div>
+    <div class="bleed ticker">
+      <div class="ticker-track">
+        <span><span class="bullet">●</span>SURVIVES SSH DISCONNECTS</span><span><span class="bullet">●</span>SURVIVES REBOOTS</span><span><span class="bullet">●</span>ONE BINARY, NO SOURCING</span><span><span class="bullet">●</span>MULTI-ACCOUNT</span>
+        <span><span class="bullet">●</span>SURVIVES SSH DISCONNECTS</span><span><span class="bullet">●</span>SURVIVES REBOOTS</span><span><span class="bullet">●</span>ONE BINARY, NO SOURCING</span><span><span class="bullet">●</span>MULTI-ACCOUNT</span>
+      </div>
+    </div>
+    <div class="hazard-strip"></div>
+  </div>
+
+  <section id="commands">
+    <div class="section-label"><span class="mark">§</span><span class="title">Commands</span><span class="count">(8)</span></div>
+    <div class="section-sub">cdev &lt;subcommand&gt; ... — bare <span class="mono" style="font-size:.8rem">cdev &lt;name&gt;</span> creates and attaches.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">1</span><div class="row-main"><div class="row-name mono">cdev &lt;name&gt; [account] [dir]</div><p class="row-desc">Create a session if it doesn't exist yet, then attach to it. Account defaults to personal.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">2</span><div class="row-main"><div class="row-name mono">cdev status</div><p class="row-desc">List every running session with its account and uptime.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">3</span><div class="row-main"><div class="row-name mono">cdev kill &lt;name&gt;</div><p class="row-desc">Stop a session and drop it from the reboot registry.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">4</span><div class="row-main"><div class="row-name mono">cdev doctor</div><p class="row-desc">Check install health and point at the exact fix for anything broken.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">5</span><div class="row-main"><div class="row-name mono">cdev upgrade</div><p class="row-desc">Install the latest tagged release.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">6</span><div class="row-main"><div class="row-name mono">cdev restore</div><p class="row-desc">Recreate every registered session. Runs once at boot.</p></div><div class="row-meta"><span class="chip auto">auto</span></div></div>
+      <div class="row"><span class="row-num">7</span><div class="row-main"><div class="row-name mono">cdev healthcheck</div><p class="row-desc">Report a session that vanished without cdev kill. Runs every 5 minutes.</p></div><div class="row-meta"><span class="chip auto">auto</span></div></div>
+      <div class="row"><span class="row-num">8</span><div class="row-main"><div class="row-name mono">cdev uninstall</div><p class="row-desc">Remove cdev from this box. Running sessions are left alone.</p></div><div class="row-meta"></div></div>
+    </div>
+  </section>
+
+  <section id="known-issues">
+    <div class="section-label"><span class="mark">!</span><span class="title">Known issues</span></div>
+    <div class="section-sub">Read this before you file a bug — it might already be documented.</div>
+    <div class="list">
+      <div class="row"><span class="row-num">!</span><div class="row-main"><div class="row-name">Workspace not trusted, on first run</div><p class="row-desc">Claude Code's trust dialog is per-directory, not per-account, so a brand new project always needs it once. cdev detects the session dying and retries automatically — this usually isn't something you have to fix by hand.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">!</span><div class="row-main"><div class="row-name">Silent stalls on an expired login</div><p class="row-desc">A session that outlives its login just goes quiet — no error, no notification. If a session looks idle after a long time away, check whether it needs to log in again before assuming something broke.</p></div><div class="row-meta"></div></div>
+      <div class="row"><span class="row-num">!</span><div class="row-main"><div class="row-name">A stale shell function can shadow the binary</div><p class="row-desc">An older, sourced-function install left loaded in a shell wins over the real one on the path. If a command ignores its own subcommand, run <span class="mono" style="font-size:.85em">type cdev</span> — if it says "is a function", <span class="mono" style="font-size:.85em">unset -f cdev</span> or open a new shell.</p></div><div class="row-meta"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-line">Built for boxes that reboot, and sessions that <span class="mark">don't</span>.</p>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 PIMLABS · MIT LICENSED</div>
+      <a href="https://github.com/pimlabs/cdev" target="_blank" rel="noopener" class="footer-link">View on GitHub ↗</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(() => {
+  document.querySelectorAll('.install-row').forEach(row => {
+    const btn = row.querySelector('.copy-btn');
+    const codeEl = row.querySelector('code');
+    if (!btn || !codeEl) return;
+    btn.addEventListener('click', () => {
+      const done = () => {
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1600);
+      };
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(codeEl.textContent).then(done, done);
+      } else {
+        done();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

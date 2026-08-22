@@ -1,0 +1,244 @@
+/* Pimlabs product marketing pages — shared design system ("Field Manual").
+   Cool technical paper, condensed uppercase display, a stamped rating
+   plate as the recurring device. Grounded in equipment nameplates and
+   spec sheets, not editorial cream+serif. Used by cdev/ and the next one.
+   index.html (the org homepage) keeps its own older system for now —
+   see PRODUCT-TEMPLATE.html for how to start a new product page. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #e9ece3;
+  --paper:   #f2f3ec;
+  --ink:     #1a1d17;
+  --dim:     #63685a;
+  --faint:   #9a9d8f;
+  --line:    rgba(26,29,23,.22);
+  --line-strong: rgba(26,29,23,.55);
+  --stamp:   #c23b22;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.cond  { font-family: "Barlow Condensed", sans-serif; text-transform: uppercase; }
+.mono  { font-family: "JetBrains Mono", monospace; }
+
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 28px; }
+.bleed { width: 100%; }
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--stamp); outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+
+/* hazard-strip ticker */
+.hazard-strip {
+  height: 6px;
+  background: repeating-linear-gradient(45deg, var(--stamp) 0 8px, var(--ink) 8px 16px);
+}
+.ticker { height: 38px; background: var(--ink); overflow: hidden; display: flex; align-items: center; margin: 0 0 44px; }
+.ticker-track { display: flex; white-space: nowrap; animation: scroll 24s linear infinite reverse; }
+.ticker-track span {
+  font-family: "JetBrains Mono", monospace; font-weight: 600;
+  font-size: .7rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--paper); padding: 0 20px;
+}
+.ticker-track span .bullet { color: var(--stamp); margin-right: 10px; }
+@keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+
+/* nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 60px;
+  border-bottom: 2px solid var(--ink);
+  background: rgba(233,236,227,.94);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center;
+}
+.nav-inner {
+  max-width: 980px; margin: 0 auto; padding: 0 28px;
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: "Barlow Condensed", sans-serif; font-weight: 700;
+  font-size: 1.15rem; letter-spacing: .03em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none;
+}
+.nav-brand .sep { color: var(--dim); font-weight: 500; padding: 0 6px; }
+.nav-links { display: flex; align-items: center; gap: 24px; }
+.nav-links a {
+  font-family: "Barlow Condensed", sans-serif; font-weight: 600;
+  font-size: .85rem; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--dim); text-decoration: none; transition: color .15s;
+}
+.nav-links a:hover { color: var(--stamp); }
+
+/* hero */
+header { padding: 142px 0 0; position: relative; }
+.stamp {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .72rem; letter-spacing: .06em;
+  color: var(--stamp); background: transparent;
+  border: 1.5px solid var(--stamp); padding: 5px 11px;
+  transform: rotate(-2deg);
+  margin-bottom: 28px;
+}
+h1 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 800; text-transform: uppercase;
+  font-size: clamp(3rem, 8vw, 5.2rem);
+  letter-spacing: -.01em; line-height: .92;
+  color: var(--ink); margin-bottom: 0;
+  max-width: 760px;
+}
+h1 .mark { color: var(--stamp); }
+.hero-foot {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: 24px;
+  margin: 28px 0 0;
+  padding-bottom: 36px;
+}
+.tagline { font-size: 1.02rem; color: var(--dim); line-height: 1.6; max-width: 440px; }
+
+/* rating plate — the signature device */
+.plate {
+  background: var(--paper); border: 2px solid var(--ink);
+  padding: 20px 22px; position: relative;
+  transform: rotate(-.5deg); flex-shrink: 0; min-width: 300px;
+}
+.plate::before, .plate::after {
+  content: ""; position: absolute; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--ink); top: 10px;
+}
+.plate::before { left: 10px; } .plate::after { right: 10px; }
+.plate-row {
+  display: flex; justify-content: space-between; gap: 16px;
+  padding: 7px 0; border-bottom: 1px dashed var(--line);
+  font-family: "JetBrains Mono", monospace; font-size: .78rem;
+}
+.plate-row:last-child { border-bottom: none; }
+.plate-row .k { color: var(--dim); letter-spacing: .03em; text-transform: uppercase; }
+.plate-row .v { font-weight: 600; text-align: right; }
+
+/* install / command bar */
+.install-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: var(--ink); color: var(--paper);
+  padding: 17px 20px; margin-top: 28px;
+  font-family: "JetBrains Mono", monospace; font-size: .9rem;
+  overflow-x: auto;
+}
+.install-row .prompt { color: var(--stamp); margin-right: 10px; user-select: none; }
+.install-row code { white-space: nowrap; }
+.copy-btn {
+  font-family: "Barlow Condensed", sans-serif; font-weight: 700;
+  font-size: .78rem; letter-spacing: .05em; text-transform: uppercase;
+  background: transparent; border: 1px solid rgba(242,243,236,.4); color: var(--paper);
+  padding: 7px 14px; cursor: pointer; flex-shrink: 0;
+  transition: border-color .15s, color .15s;
+}
+.copy-btn:hover { border-color: var(--stamp); color: var(--stamp); }
+.copy-btn.copied { border-color: var(--stamp); color: var(--stamp); }
+.reqs { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 18px 0 60px; font-size: .82rem; color: var(--dim); }
+.reqs .text-link { color: var(--stamp); text-decoration: none; border-bottom: 1px dotted var(--stamp); }
+
+/* spec band — dark, full-width, reused for the 3-fact strip */
+.band { background: var(--ink); color: var(--paper); margin: 0 0 96px; }
+.band-inner {
+  max-width: 980px; margin: 0 auto; padding: 36px 28px;
+  display: grid; grid-template-columns: repeat(3,1fr);
+}
+.band .stat-block { border-left: 1px dashed rgba(242,243,236,.28); padding-left: 24px; }
+.band .stat-block:first-child { border-left: none; padding-left: 0; }
+.band .stat-num {
+  display: block; font-family: "Barlow Condensed", sans-serif; font-weight: 800;
+  font-size: 2.3rem; letter-spacing: -.01em; line-height: 1; color: var(--paper);
+}
+.band .stat-num.accent { color: var(--stamp); }
+.band .stat-lbl {
+  font-family: "JetBrains Mono", monospace;
+  font-size: .68rem; letter-spacing: .06em; text-transform: uppercase;
+  color: rgba(242,243,236,.55); margin-top: 10px;
+}
+
+/* section label */
+.section-label {
+  display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;
+  padding-bottom: 14px; border-bottom: 2px solid var(--ink);
+}
+.section-label .mark { font-family: "JetBrains Mono", monospace; font-size: .95rem; color: var(--stamp); }
+.section-label .title {
+  font-family: "Barlow Condensed", sans-serif; font-weight: 700; text-transform: uppercase;
+  font-size: 1.15rem; letter-spacing: .01em; color: var(--ink);
+}
+.section-label .count { font-family: "JetBrains Mono", monospace; font-size: .78rem; color: var(--faint); }
+.section-sub { font-size: .85rem; color: var(--dim); margin: 14px 0 8px; }
+
+/* clause list — numbered rows, reused for features and command reference */
+.list { margin-bottom: 100px; }
+.row {
+  position: relative;
+  display: grid; grid-template-columns: 44px 1fr auto;
+  align-items: start; gap: 20px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  text-decoration: none; color: inherit;
+}
+.list .row:last-child { border-bottom: 1px solid var(--line); }
+.row-num { font-family: "JetBrains Mono", monospace; font-size: .82rem; color: var(--stamp); padding-top: 3px; }
+.row-main { min-width: 0; }
+.row-name {
+  font-family: "Barlow Condensed", sans-serif; font-weight: 700; text-transform: uppercase;
+  font-size: 1.05rem; letter-spacing: .01em; margin-bottom: 6px;
+}
+.row-name.mono { font-family: "JetBrains Mono", monospace; font-weight: 600; text-transform: none; font-size: 1rem; }
+.row-desc { font-size: .88rem; color: var(--dim); line-height: 1.55; max-width: 520px; }
+.row-meta { text-align: right; font-size: .72rem; color: var(--faint); white-space: nowrap; }
+
+/* mono chip — command names, flags, file names */
+.chip {
+  font-family: "JetBrains Mono", monospace; font-size: .72rem; letter-spacing: .02em;
+  border: 1px solid var(--line-strong); padding: 3px 8px;
+  color: var(--ink); background: transparent;
+  white-space: nowrap;
+}
+.chip.auto { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* footer */
+footer { border-top: 2px solid var(--ink); padding: 44px 0 60px; }
+.footer-line {
+  font-family: "Barlow Condensed", sans-serif; font-weight: 700; text-transform: uppercase;
+  font-size: clamp(1.5rem, 3.6vw, 2.1rem); letter-spacing: 0; line-height: 1.1;
+  max-width: 640px; margin-bottom: 32px;
+}
+.footer-line .mark { color: var(--stamp); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.footer-copy { font-family: "JetBrains Mono", monospace; font-size: .72rem; color: var(--faint); }
+.footer-link {
+  font-family: "Barlow Condensed", sans-serif; font-weight: 600;
+  font-size: .82rem; letter-spacing: .04em; text-transform: uppercase; color: var(--dim);
+  text-decoration: none; display: flex; align-items: center; gap: 7px; transition: color .15s;
+}
+.footer-link:hover { color: var(--stamp); }
+
+@media(max-width:640px){
+  .nav-links a:not(.nav-gh) { display:none; }
+  header { padding-top: 116px; }
+  .band-inner { grid-template-columns:1fr; gap: 20px; }
+  .band .stat-block { border-left:none; padding-left:0; }
+  .row { grid-template-columns: 30px 1fr; }
+  .row-meta { grid-column: 2; text-align:left; margin-top: 8px; }
+  .footer-bottom { flex-direction:column; align-items:flex-start; }
+}
