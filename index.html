@@ -209,7 +209,7 @@ h1 em {
   animation: numdrift 6s ease-in-out infinite;
 }
 @keyframes numdrift { 0%,100%{ transform: translateY(-50%) } 50%{ transform: translateY(calc(-50% - 6px)) } }
-.row { cursor: crosshair; }
+.row { cursor: pointer; }
 .row:hover { background: var(--ink); color: var(--bg); }
 .row:hover .row-bignum { color: var(--bg); opacity: .08; }
 .row:hover .row-desc { color: rgba(245,242,234,.65); }
@@ -394,16 +394,20 @@ function getStatus(repo) {
   if(d<90)          return {label:"Active",   cls:"row-status"};
   return                   {label:"R&D",      cls:"row-status arch"};
 }
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
 function renderRow(repo, i) {
   const {label,cls} = getStatus(repo);
-  const desc   = repo.description || "No description available.";
+  const desc   = escapeHtml(repo.description || "No description available.");
   const age    = getAge(repo.pushed_at);
   const topics = (repo.topics||[]).slice(0,5);
-  const topicsHTML = topics.length ? '<div class="row-topics">'+topics.map(t=>'<span>'+t+'</span>').join("")+'</div>' : "";
-  const primaryUrl = repo.homepage || repo.html_url;
-  const secondary   = repo.homepage ? '<a href="'+repo.html_url+'" target="_blank" class="row-hp" onclick="event.stopPropagation()">GitHub ↗</a>' : "";
-  const lic    = repo.license ? '<span class="chip">'+repo.license.spdx_id+'</span>' : "";
+  const topicsHTML = topics.length ? '<div class="row-topics">'+topics.map(t=>'<span>'+escapeHtml(t)+'</span>').join("")+'</div>' : "";
+  const primaryUrl = escapeHtml(repo.homepage || repo.html_url);
+  const secondary   = repo.homepage ? '<a href="'+escapeHtml(repo.html_url)+'" target="_blank" class="row-hp">GitHub ↗</a>' : "";
+  const lic    = repo.license ? '<span class="chip">'+escapeHtml(repo.license.spdx_id)+'</span>' : "";
   const idx    = String(i+1).padStart(2,"0");
+  const name   = escapeHtml(repo.name);
   const statLine = '<div class="stat-line">'
     +'<span class="stars">&#9733; '+repo.stargazers_count+'</span>'
     +(repo.forks_count?'<span>&#9410; '+repo.forks_count+'</span>':'')
@@ -411,11 +415,11 @@ function renderRow(repo, i) {
     +(repo.watchers_count?'<span>&#9673; '+repo.watchers_count+'</span>':'')
     +lic
     +'</div>';
-  return '<div class="row" onclick="window.open(\''+primaryUrl+'\',\'_blank\')">'
+  return '<div class="row" data-url="'+primaryUrl+'">'
     +'<span class="row-bignum">'+idx+'</span>'
     +'<div class="row-main">'
-    +'<div class="row-name">'+repo.name.charAt(0).toUpperCase()+repo.name.slice(1)+'<span class="'+cls+'">'+label+'</span></div>'
-    +'<div class="row-slug">pimlabs/'+repo.name+'</div>'
+    +'<div class="row-name">'+name.charAt(0).toUpperCase()+name.slice(1)+'<span class="'+cls+'">'+label+'</span></div>'
+    +'<div class="row-slug">pimlabs/'+name+'</div>'
     +'<p class="row-desc">'+desc+'</p>'
     +topicsHTML
     +secondary
@@ -490,6 +494,15 @@ async function load() {
   const grid  = document.getElementById("grid");
   if(!valid.length){ grid.innerHTML='<p style="font-size:.85rem;color:var(--dim)">Could not load repositories.</p>'; return; }
   grid.innerHTML = valid.map(renderRow).join("");
+  grid.addEventListener("click", (e) => {
+    if (e.target.closest("a")) return;
+    const row = e.target.closest(".row");
+    if (!row || !row.dataset.url) return;
+    try {
+      const u = new URL(row.dataset.url, location.href);
+      if (u.protocol === "http:" || u.protocol === "https:") window.open(u.href, "_blank");
+    } catch {}
+  });
   document.getElementById("work-count").textContent = "("+valid.length+")";
   document.getElementById("stat-repos").dataset.target  = valid.length;
   document.getElementById("stat-stars").dataset.target  = valid.reduce((s,r)=>s+r.stargazers_count,0);
